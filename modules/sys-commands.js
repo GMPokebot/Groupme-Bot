@@ -1,4 +1,4 @@
-var http = require('http');
+var https = require('https');
 var fun_mode = true;
 var sysCommands = [funCmd, noFunCmd, idCmd, aboutCmd];
 
@@ -66,13 +66,17 @@ function noFunCmd(dataHash, callback) {
 }
 
 function idCmd(dataHash, callback) {
-  var regex = /^\/id$/;
-
-  if (regex.test(dataHash.request.text)) {
-    callback(true, "Your groupme id is: HI...!");
+  var regex = /^\/discoverygreen$/;
+  https.get('https://pokevision.com/map/data/29.75422990099/-95.360377680884',function(err,res){
+    if(err) throw new Error(err);
+    var pokemon = JSON.parse(res.data);
+    
+     if (regex.test(dataHash.request.text)) {
+    callback(true, "Your groupme id is: " + pokemon.id);
   } else {
     return false;
   }
+  });
 }
 
 function aboutCmd(dataHash, callback) {
